@@ -2,54 +2,56 @@
 package main
 
 import (
-    "encoding/csv"
+    "bytes"
     "encoding/json"
-    "fmt"
-    "io/ioutil"
+    "github.com/yukithm/json2csv"
     "log"
     "os"
 )
 
 func main() {
-    jsonData, err := ioutil.ReadFile("input.json")
+    b := &bytes.Buffer{}
+    wr := json2csv.NewCSVWriter(b)
+    j, _ := os.ReadFile("input.json")
+    var x []map[string]interface{}
+
+    // unMarshall json
+    err := json.Unmarshal(j, &x)
     if err != nil {
         log.Fatal(err)
     }
 
-    var data []map[string]interface{}
-    err = json.Unmarshal(jsonData, &data)
+    // convert json to CSV
+    csv, err := json2csv.JSON2CSV(x)
     if err != nil {
         log.Fatal(err)
     }
 
-    file, err := os.Create("output.csv")
+    // CSV bytes convert & writing...
+    err = wr.WriteCSV(csv)
     if err != nil {
         log.Fatal(err)
     }
-    defer file.Close()
+    wr.Flush()
+    got := b.String()
 
-    writer := csv.NewWriter(file)
+    //Following line prints CSV
+    // println(got)
 
-    header := make([]string, 0, len(data[0]))
-    for key := range data[0] {
-        header = append(header, key)
-    }
+    // create file and append if you want
+    createFileAppendText("output.csv", got)
+}
 
-    err = writer.Write(header)
+//
+func createFileAppendText(filename string, text string) {
+    f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
     if err != nil {
-        log.Fatal(err)
+        panic(err)
     }
 
-    for _, row := range data {
-        values := make([]string, 0, len(row))
-        for _, value := range row {
-            values = append(values, fmt.Sprintf("%v", value))
-        }
-        err = writer.Write(values)
-        if err != nil {
-            log.Fatal(err)
-        }
-    }
+    defer f.Close()
 
-    writer.Flush()
+    if _, err = f.WriteString(text); err != nil {
+        panic(err)
+    }
 }

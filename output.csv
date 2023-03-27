@@ -1,4 +1,4 @@
-id,name,age,isMarried
-1,Alice,25,true
-Bob,30,false,2
-Charlie,35,true,3
+/age,/id,/isMarried,/name
+25,1,true,Alice
+30,2,false,Bob
+35,3,true,Charlie
