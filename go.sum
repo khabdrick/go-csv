@@ -1,0 +1,4 @@
+github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a h1:/5o1ejt5M0fNAN2lU1NBLtPzUSZru689EWJq01ptr+E=
+github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a/go.mod h1:5YoVOkjYAQumqlV356Hj3xeYh4BdZuLE0/nRkf2NKkI=
+github.com/jszwec/csvutil v1.8.0 h1:G7vS2LGdpZZDH1HmHeNbxOaJ/ZnJlpwGFvOkTkJzzNk=
+github.com/jszwec/csvutil v1.8.0/go.mod h1:/E4ONrmGkwmWsk9ae9jpXnv9QT8pLHEPcCirMFhxG9I=

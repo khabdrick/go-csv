@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "isMarried": true
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "isMarried": false
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "isMarried": true
+    }
+  ]
+  

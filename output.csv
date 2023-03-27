@@ -1,0 +1,4 @@
+id,name,age,isMarried
+1,Alice,25,true
+Bob,30,false,2
+Charlie,35,true,3
