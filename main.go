@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// Open the CSV file
-	file, err := os.Open("Data.csv")
+	file, err := os.Open("data.csv")
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// Write the CSV data
-	file2, err := os.Create("Data1.csv")
+	file2, err := os.Create("data1.csv")
 	if err != nil {
 		panic(err)
 	}
@@ -41,14 +41,14 @@ func main() {
 	defer writer.Flush()
 // this defines the header value and data values for the new csv file
 	headers := []string{"name", "age", "gender"}
-	Data1 := [][]string{
+	data1 := [][]string{
 		{"Alice", "25", "Female"},
 		{"Bob", "30", "Male"},
 		{"Charlie", "35", "Male"},
 	}
 
 	writer.Write(headers)
-	for _, row := range Data1 {
+	for _, row := range data1 {
 		writer.Write(row)
 	}
 }

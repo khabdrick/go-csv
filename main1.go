@@ -14,7 +14,7 @@ type Person struct {
 }
 
 func main() {
-    file, err := os.Create("Data2.csv")
+    file, err := os.Create("data2.csv")
     if err != nil {
         panic(err)
     }

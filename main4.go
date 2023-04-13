@@ -2,58 +2,56 @@
 package main
 
 import (
-    "encoding/csv"
+    "bytes"
     "encoding/json"
+    "github.com/yukithm/json2csv"
     "log"
     "os"
-    "strconv"
 )
 
 func main() {
-    // Open the CSV file
-    file, err := os.Open("Data1.csv")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer file.Close()
+    b := &bytes.Buffer{}
+    wr := json2csv.NewCSVWriter(b)
+    j, _ := os.ReadFile("input.json")
+    var x []map[string]interface{}
 
-    // Create the CSV reader
-    csvReader := csv.NewReader(file)
-
-    // Read the CSV headers
-    headers, err := csvReader.Read()
+    // unMarshall json
+    err := json.Unmarshal(j, &x)
     if err != nil {
         log.Fatal(err)
     }
 
-    // Read the CSV data rows
-    var data []map[string]interface{}
-    for {
-        row, err := csvReader.Read()
-        if err != nil {
-            break
-        }
-        // Convert the row values to the appropriate types
-        m := make(map[string]interface{})
-        for i, val := range row {
-            f, err := strconv.ParseFloat(val, 64)
-            if err == nil {
-                m[headers[i]] = f
-                continue
-            }
-            b, err := strconv.ParseBool(val)
-            if err == nil {
-                m[headers[i]] = b
-                continue
-            }
-            m[headers[i]] = val
-        }
-        data = append(data, m)
+    // convert json to CSV
+    csv, err := json2csv.JSON2CSV(x)
+    if err != nil {
+        log.Fatal(err)
     }
 
-    // Encode the JSON data and write it to stdout
-    encoder := json.NewEncoder(os.Stdout)
-    if err := encoder.Encode(data); err != nil {
+    // CSV bytes convert & writing...
+    err = wr.WriteCSV(csv)
+    if err != nil {
         log.Fatal(err)
+    }
+    wr.Flush()
+    got := b.String()
+
+    //Following line prints CSV
+    // println(got)
+
+    // create file and append if you want
+    createFileAppendText("output.csv", got)
+}
+
+//
+func createFileAppendText(filename string, text string) {
+    f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+    if err != nil {
+        panic(err)
+    }
+
+    defer f.Close()
+
+    if _, err = f.WriteString(text); err != nil {
+        panic(err)
     }
 }

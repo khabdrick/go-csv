@@ -1,27 +1,34 @@
 //main2.go
+
 package main
 
 import (
-    "encoding/csv"
-    "os"
+   "fmt"
+   "github.com/gocarina/gocsv"
+   "os"
 )
 
+type Record struct {
+   Name  string `csv:"name"`
+   Gender string `csv:"gender"`
+}
+
 func main() {
-    // Open the CSV file for appending
-    file, err := os.OpenFile("Data1.csv", os.O_APPEND|os.O_WRONLY, 0644)
-    if err != nil {
-        panic(err)
-    }
-    defer file.Close()
+   // Open the CSV file
+   file, err := os.Open("data2.csv")
+   if err != nil {
+       panic(err)
+   }
+   defer file.Close()
 
-    // Create a CSV writer
-    writer := csv.NewWriter(file)
-    defer writer.Flush()
+   // Read the CSV file into a slice of Record structs
+   var records []Record
+   if err := gocsv.UnmarshalFile(file, &records); err != nil {
+       panic(err)
+   }
 
-    // Write a new row to the CSV file
-    row := []string{"David", "30", "Male"}
-    err = writer.Write(row)
-    if err != nil {
-        panic(err)
-    }
+   // Print the records
+   for _, record := range records {
+       fmt.Printf("Name: %s, Gender: %s\n", record.Name, record.Gender)
+   }
 }
